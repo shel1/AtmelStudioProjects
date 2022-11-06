@@ -5,7 +5,7 @@
  * Author : crash
 */
 
-#define F_CPU 10000000
+#define F_CPU 1000000
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
