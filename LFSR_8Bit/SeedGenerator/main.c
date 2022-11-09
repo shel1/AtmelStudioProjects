@@ -17,7 +17,7 @@
 #define SEED5_ON		PORTB |= (1<<PORTB4)
 #define SEED6_ON		PORTB |= (1<<PORTB5)
 #define SEED7_ON		PORTB |= (1<<PORTB6)
-#define SEED8_ON		PORTD |= (1<<PORTD6)
+#define SEED8_ON		PORTB |= (1<<PORTB7)
 #define REGCLEAR_OFF	PORTD |= (1<<PORTD4)
 #define REG_DISABLE		PORTD |= (1<<PORTD5)
 
@@ -28,8 +28,8 @@
 #define SEED5_OFF		PORTB &= ~(1<<PORTB4)
 #define SEED6_OFF		PORTB &= ~(1<<PORTB5)
 #define SEED7_OFF		PORTB &= ~(1<<PORTB6)
-#define SEED8_OFF		PORTD &= ~(1<<PORTD6)
-#define REGCLEAR_ON		PORTD &= ~(1<<PORTD4)
+#define SEED8_OFF		PORTB &= ~(1<<PORTB7)
+#define REGCLEAR_ACTIVE		PORTD &= ~(1<<PORTD4)
 #define REG_ENABLE		PORTD &= ~(1<<PORTD5)
 
 #define SEED1_TOGGLE		PORTB ^= (1<<PORTB0)
@@ -68,7 +68,13 @@ uint8_t seed8	=	0b10101010;
 
 ISR(INT0_vect)
 {
-	if (counter < 0x8){
+	if (counter < 0xA){
+		if(counter == 0x0){
+			REGCLEAR_ACTIVE;
+		}else if(counter == 0x1){
+			REGCLEAR_OFF;
+		}
+		
 		if(seed1 & MASK0){
 			SEED1_ON;
 		}else{
@@ -120,9 +126,9 @@ ISR(INT0_vect)
 		seed7 = seed7>>1;
 		seed8 = seed8>>1;
 		}else{
-			//once seeds are loaded, enable all the shift registers
 			REG_ENABLE;
 		}
+		
 	}
 
 
@@ -131,12 +137,11 @@ int main (void){
 	
 	//enable ports as outputs
 	DDRB |= (1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3)|(1<<PORTB4)|(1<<PORTB5)|(1<<PORTB6);
-	DDRD |= (1<<PORTD6)|(1<<PORTD4)|(1<<PORTD5);
+	DDRD |= (1<<PORTD4)|(1<<PORTD5);
 	//set starting states
 	REG_DISABLE;
-	REGCLEAR_ON;
-	_delay_ms(100);
 	REGCLEAR_OFF;
+
 	SEED1_OFF;
 	SEED1_OFF;
 	SEED3_OFF;
@@ -145,15 +150,13 @@ int main (void){
 	SEED6_OFF;
 	SEED7_OFF;
 	SEED8_OFF;
-	
-	sei();
-	
+		
 	// turn on interrupts!
 	GIMSK  |= (1<<INT0);
 
 	// interrupt on INT0 pin rising edge (sensor triggered)
 	MCUCR = (1<<ISC01) | (1<<ISC00);
-	
+	sei();
 	
 	
 	while (1) {
