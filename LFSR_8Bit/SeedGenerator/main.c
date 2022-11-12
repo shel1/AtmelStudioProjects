@@ -127,8 +127,9 @@ ISR(INT0_vect)
 		seed8 = seed8>>1;
 		}else{
 			//set seeds to Hi-Z state
-			DDRB &= ~(1<<PORTB0)&~(1<<PORTB1)&~(1<<PORTB2)&~(1<<PORTB3)&~(1<<PORTB4)&~(1<<PORTB5)&~(1<<PORTB6);
-			DDRD &= ~(1<<PORTD6);
+			DDRB &= ~(1<<DDB0)&~(1<<DDB1)&~(1<<DDB2)&~(1<<DDB3)&~(1<<DDB4)&~(1<<DDB5)&~(1<<DDB6);
+			DDRD &= ~(1<<DDD6);
+			PORTB &= 
 			//enable shift registers
 			REG_ENABLE;
 			
@@ -141,8 +142,8 @@ int main (void){
 	
 	
 	//enable ports as outputs
-	DDRB |= (1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3)|(1<<PORTB4)|(1<<PORTB5)|(1<<PORTB6);
-	DDRD |= (1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6);
+	DDRB |= (1<<DDB0)|(1<<DDB1)|(1<<DDB2)|(1<<DDB3)|(1<<DDB4)|(1<<DDB5)|(1<<DDB6);
+	DDRD |= (1<<DDD4)|(1<<DDD5)|(1<<DDD6);
 	//set starting states
 	REG_DISABLE;
 	REGCLEAR_OFF;
