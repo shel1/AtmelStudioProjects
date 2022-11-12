@@ -55,20 +55,20 @@
 	PD5	reg_enable
 	
 */
-uint8_t counter = 0;
-uint8_t seed1	=	0b10101010;
-uint8_t seed2	=	0b01010101;
-uint8_t seed3	=	0b11100011;
-uint8_t seed4	=	0b00011100;
-uint8_t seed5	=	0b11101010;
-uint8_t seed6	=	0b00101010;
-uint8_t seed7	=	0b00010100;
-uint8_t seed8	=	0b10101010;
+volatile counter = 0;
+volatile uint8_t seed1	=	0b10101010;
+volatile uint8_t seed2	=	0b01010101;
+volatile uint8_t seed3	=	0b11100011;
+volatile uint8_t seed4	=	0b00011100;
+volatile uint8_t seed5	=	0b11101010;
+volatile uint8_t seed6	=	0b00101010;
+volatile uint8_t seed7	=	0b00010100;
+volatile uint8_t seed8	=	0b10101010;
 
 
 ISR(INT0_vect)
 {
-	if (counter < 0xA){
+	if (counter < 16){
 		if(counter == 0x0){
 			REGCLEAR_ACTIVE;
 		}else if(counter == 0x1){
