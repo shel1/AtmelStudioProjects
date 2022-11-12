@@ -55,7 +55,7 @@
 	PD5	reg_enable
 	
 */
-volatile counter = 0;
+volatile uint8_t counter = 0;
 volatile uint8_t seed1	=	0b10101010;
 volatile uint8_t seed2	=	0b01010101;
 volatile uint8_t seed3	=	0b11100011;
@@ -126,7 +126,12 @@ ISR(INT0_vect)
 		seed7 = seed7>>1;
 		seed8 = seed8>>1;
 		}else{
+			//set seeds to Hi-Z state
+			DDRB &= ~(1<<PORTB0)&~(1<<PORTB1)&~(1<<PORTB2)&~(1<<PORTB3)&~(1<<PORTB4)&~(1<<PORTB5)&~(1<<PORTB6);
+			DDRD &= ~(1<<PORTD6);
+			//enable shift registers
 			REG_ENABLE;
+			
 		}
 		
 	}
@@ -137,7 +142,7 @@ int main (void){
 	
 	//enable ports as outputs
 	DDRB |= (1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3)|(1<<PORTB4)|(1<<PORTB5)|(1<<PORTB6);
-	DDRD |= (1<<PORTD4)|(1<<PORTD5);
+	DDRD |= (1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6);
 	//set starting states
 	REG_DISABLE;
 	REGCLEAR_OFF;
