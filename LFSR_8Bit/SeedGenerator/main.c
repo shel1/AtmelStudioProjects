@@ -56,14 +56,14 @@
 	
 */
 volatile uint8_t counter = 0;
-volatile uint8_t seed1	=	0b10101010;
-volatile uint8_t seed2	=	0b01010101;
-volatile uint8_t seed3	=	0b11100011;
-volatile uint8_t seed4	=	0b00011100;
-volatile uint8_t seed5	=	0b11101010;
-volatile uint8_t seed6	=	0b00101010;
-volatile uint8_t seed7	=	0b00010100;
-volatile uint8_t seed8	=	0b10101010;
+volatile uint8_t seed1	=	0b10101010; //170
+volatile uint8_t seed2	=	0b01010101; //85
+volatile uint8_t seed3	=	0b11100011; //227
+volatile uint8_t seed4	=	0b00011100; //28
+volatile uint8_t seed5	=	0b11101010; //234
+volatile uint8_t seed6	=	0b00101010; //42
+volatile uint8_t seed7	=	0b00010100; //20
+volatile uint8_t seed8	=	0b10010110; //150
 
 
 ISR(INT0_vect)
@@ -129,7 +129,8 @@ ISR(INT0_vect)
 			//set seeds to Hi-Z state
 			DDRB &= ~(1<<DDB0)&~(1<<DDB1)&~(1<<DDB2)&~(1<<DDB3)&~(1<<DDB4)&~(1<<DDB5)&~(1<<DDB6);
 			DDRD &= ~(1<<DDD6);
-			PORTB &= 
+			PORTB &= ~(1<<PORTB0)&~(1<<PORTB1)&~(1<<PORTB2)&~(1<<PORTB3)&~(1<<PORTB4)&~(1<<PORTB5)&~(1<<PORTB6);
+			PORTD &= ~(1<<PORTD6);
 			//enable shift registers
 			REG_ENABLE;
 			
